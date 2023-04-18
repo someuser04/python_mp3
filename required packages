@@ -1,2 +1,2 @@
 import pygame
-from tkinker import *
+from tkinter import *
