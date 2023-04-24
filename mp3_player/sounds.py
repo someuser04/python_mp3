@@ -20,8 +20,8 @@ def add_tracks():
     songs = filedialog.askopenfile(initialdir='audio/', title="Choose a song", filetypes=(("mp3 Files", "*.mp3"), ))
 
     for song in songs:
-        song = song.replace("C:/Users/juant/Desktop/python_mp3/mp3_player/audio/", "")
-        song = song.replace(".mp3", "")
+        #song = song.replace("C:/Users/juant/Desktop/python_mp3/mp3_player/audio/", "")
+        #song = song.replace(".mp3", "")
         song_list.insert(END, song)
 def play():
     song = song_list.get(ACTIVE)
@@ -31,8 +31,8 @@ def play():
     pygame.mixer.music.play(loops=0)
     time()
 
-    slider_position = int(song_l)
-    slider.config(to=slider_position, value=0)
+    #slider_position = int(song_l)
+    #slider.config(to=slider_position, value=0)
 
 def stop():
     pygame.mixer.music.stop()
@@ -81,7 +81,7 @@ def clear_track():
 
 def time():
     current_time = pygame.mixer.music.get_pos() / 1000
-    
+    slider_label.config(text=f'Slider: {int(slider.get())} and Song Pos: {int(current_time)}')
     converted_current_time = time.strftime('%H:%M:%S', time.gmtime(current_time))
     status.config(text=f'Time Elapsed:{converted_current_time} of {converted_song_l}  ')
     slider.config(value=int(current_time))
@@ -94,6 +94,20 @@ def time():
 
     song_l = song_mute.info.length
     converted_song_l = time.strftime('%H:%M:%S', time.gmtime(song_l))
+    current_time += 1
+    if int(slider.get()) == int(current_time):
+        # slider hasnt been moved
+        slider_position = int(song_l)
+        slider.config(to=slider_position, value=int(current_time))
+    else:
+        slider_position = int(song_l)
+        slider.config(to=slider_position, value=int(slider.get()))
+        converted_current_time = time.strftime('%H:%M:%S', time.gmtime(current_time))
+        status.config(text=f'Time Elapsed:{converted_current_time} of {converted_song_l}  ')
+
+    slider_position = int(song_l)
+    
+    slider.config(to=slider_position, value=int(current_time))
     
     status.after(1000, time)
 global paused
@@ -111,8 +125,12 @@ def pause(is_paused):
         paused = True
 
 def slide(x):
-    slider_label.config(text=f'{int(slider.get())} of {int(song_l)}')
+    #slider_label.config(text=f'{int(slider.get())} of {int(song_l)}')
+    song = song_list.get(ACTIVE)
+    song = f'audio/{song}.mp3'
 
+    pygame.mixer.music.load(song)
+    pygame.mixer.music.play(loops=0, start=int(slider.get()))
 
 song_list = Listbox(root, bg="black", fg="green", width=60, selectbackground="gray", selectforeground="black")
 song_list.pack(pady=20)
