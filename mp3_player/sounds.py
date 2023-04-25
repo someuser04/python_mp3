@@ -7,7 +7,7 @@ import tkinter.ttk as tkk
 import os
 from pathlib import Path
 import random
-root = Tk(os.path.abspath('python_mp3'))     
+root = Tk()     
 root.title('Python Player')
 root.iconbitmap()
 root.geometry("500x450")
@@ -16,16 +16,18 @@ root.configure(background=rgb)
 pygame.mixer.init()
 
 def add_tracks():
+    current_dir = os.getcwd()
     songs = filedialog.askopenfilenames(initialdir='audio', title="Choose a song", filetypes=(("mp3 Files", "*.mp3"), ))
 
     for song_file in songs:
-        song = song_file.replace("C:/Users/juant/Desktop/python_mp3/audio/", "")
-        song = song.replace(".mp3", "")
-        song_list.insert(END, song)
+        print(song_file)
+        #song = song_file.replace('audio', "")
+        #song = song.replace(".mp3", "")
+        song_list.insert(END, song_file)
 
 def play():
     song = song_list.get(ACTIVE)
-    song = f'audio/{song}.mp3'
+    song = f'{song}'
 
     pygame.mixer.music.load(song)
     pygame.mixer.music.play(loops=0)
@@ -52,7 +54,7 @@ def foward_song():
     next_song = song_list.curselection()
     next_song = next_song[0] + 1 
     song = song_list.get(next_song)
-    song = f'audio/{song}.mp3'
+    song = f'{song}'
 
     pygame.mixer.music.load(song)
     pygame.mixer.music.play(loops=0)
@@ -67,7 +69,7 @@ def prev_song():
     next_song = song_list.curselection()
     next_song = next_song[0] - 1 
     song = song_list.get(next_song)
-    song = f'audio/{song}.mp3'
+    song = f'{song}'
 
     pygame.mixer.music.load(song)
     pygame.mixer.music.play(loops=0)
