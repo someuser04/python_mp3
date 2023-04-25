@@ -3,11 +3,15 @@ from tkinter import *
 import pygame
 from tkinter.filedialog import askopenfilename
 from PIL import Image, ImageTk
+import random
 
 root = Tk()
 root.title('Mp3 player')
 root.iconbitmap()
 root.geometry("500x400")
+#background random color
+rgb = ["#" +''.join([random.choice('ABCDEF0123456789') for i in range(6)])]
+root.configure(background=rgb)
 #background_image = pygame.image.load("samurai.jpg").convert()
 pygame.mixer.init()
 def play():
